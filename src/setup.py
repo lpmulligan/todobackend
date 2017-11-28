@@ -7,7 +7,7 @@ setup (
   packages             = find_packages(),
   include_package_data = True,
   scripts              = ["manage.py"],
-  install_requires     = ["asteroid>=1.5.3",
+  install_requires     = ["astroid>=1.5.3",
                           "backports.functools-lru-cache>=1.4",
                           "configparser>=3.5.0",
                           "Django>=1.11.7,<2.0",
