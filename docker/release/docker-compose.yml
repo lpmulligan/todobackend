@@ -11,17 +11,29 @@ app:
     MYSQL_USER: todo
     MYSQL_PASSWORD: password
   command:
-    - uswgi
+    - uwsgi
     - "--socket /var/www/todobackend/todobackend.sock"
     - "--chmod-socket=666"
     - "--module todobackend.wsgi"
     - "--master"
     - "--die-on-term"
 
+test:
+  image: lpmulligan/todobackend-specs
+  links:
+    - nginx
+  environment:
+    URL: http://nginx:8000/todos
+    JUNIT_REPORT_PATH: /reports/acceptance.xml
+    JUNIT_REPORT_STACK: 1
+  command: --reporter mocha-jenkins-reporter
+
 nginx:
   image: nginx
+  links:
+    - app
   volumes:
-    - ./todobackend.conf:/etc/nginx.conf.d./todobackend.conf
+    - ./todobackend.conf:/etc/nginx/conf.d/todobackend.conf
   ports:
     - "8000:8000"
   volumes_from:
@@ -31,7 +43,7 @@ webroot:
   build: ../../
   dockerfile: docker/release/Dockerfile
   volumes:
-    - /var/www/todbackend
+    - /var/www/todobackend
   entrypoint: "true"
 
 db:
