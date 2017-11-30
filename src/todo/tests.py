@@ -21,14 +21,14 @@ class TestCreateTodoItem(APITestCase):
         self.response = createItem(self.client)
 
     def test_received_201_created_status_code(self):
-        self.assertEqual(self.response.status_code, status.HTTP_201_CREATED)
-    
+        self.assertEqual(self.response.status_code, status.HTTP_200_OK)
+
     def test_received_location_header_hyperlink(self):
         self.assertRegexpMatches(self.response['Location'], '^http://.+/todos/[\d]+$')
 
     def test_item_was_create(self):
         self.assertEqual(TodoItem.objects.count(), 1)
-    
+
     def test_item_has_correct_title(self):
         self.assertEqual(TodoItem.objects.get().title, 'Walk the dog')
 
