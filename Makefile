@@ -46,8 +46,6 @@ test:
 	@ docker-compose -p $(DEV_PROJECT) -f $(DEV_COMPOSE_FILE) pull
 	${INFO} "Building images..."
 	@ docker-compose -p $(DEV_PROJECT) -f $(DEV_COMPOSE_FILE) build --pull test
-	# In V2 the cache service is no longer created.  The cache volume is created above
-	#@ docker-compose -p $(DEV_PROJECT) -f $(DEV_COMPOSE_FILE) build cache
 	${INFO} "Ensuring database is ready..."
 	@ docker-compose -p $(DEV_PROJECT) -f $(DEV_COMPOSE_FILE) run --rm agent
 	${INFO} "Running tests..."
@@ -71,8 +69,6 @@ release:
 	@ docker-compose -p $(REL_PROJECT) -f $(REL_COMPOSE_FILE) pull test
 	${INFO} "Building images..."
 	@ docker-compose -p $(REL_PROJECT) -f $(REL_COMPOSE_FILE) build app
-	# In V2 the cache service is no longer created.  The webroot volume is created above
-	#@ docker-compose -p $(REL_PROJECT) -f $(REL_COMPOSE_FILE) build webroot
 	@ docker-compose -p $(REL_PROJECT) -f $(REL_COMPOSE_FILE) build --pull nginx
 	${INFO} "Ensuring database is ready..."
 	@ docker-compose -p $(REL_PROJECT) -f $(REL_COMPOSE_FILE) run --rm agent
@@ -108,7 +104,6 @@ buildtag:
 login:
 	${INFO} "Logging in to Docker registry $$DOCKER_REGISTRY..."
 	@ docker login -u $$DOCKER_USER -p $$DOCKER_PASSWORD
-#	docker login -u $$DOCKER_USER --password-stdin
 	${INFO} "Logged in to Docker registry $$DOCKER_REGISTRY"
 
 logout:
